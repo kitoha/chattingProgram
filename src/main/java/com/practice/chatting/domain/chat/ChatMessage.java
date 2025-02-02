@@ -1,4 +1,4 @@
-package com.practice.chatting.domain;
+package com.practice.chatting.domain.chat;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

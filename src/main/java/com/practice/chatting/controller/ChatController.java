@@ -1,6 +1,6 @@
 package com.practice.chatting.controller;
 
-import com.practice.chatting.domain.ChatMessage;
+import com.practice.chatting.domain.chat.ChatMessage;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.RestController;
