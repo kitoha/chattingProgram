@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: chatting
+  datasource:
+    url: jdbc:mysql://localhost:3307/chat_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: chatuser
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+
