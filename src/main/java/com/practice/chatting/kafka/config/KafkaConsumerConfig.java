@@ -19,12 +19,15 @@ public class KafkaConsumerConfig {
   @Value(value = "${kafka.consumer.bootstrap-servers}")
   private String bootstrapSevers;
 
+  private final static String GROUP_ID = "chatting_group";
+
   @Bean
   public ConsumerFactory<String, ChatMessage> consumerFactory(){
     Map<String, Object> configProps = new HashMap<>();
     configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapSevers);
     configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+    configProps.put(ConsumerConfig.GROUP_ID_CONFIG, GROUP_ID);
 
     return new DefaultKafkaConsumerFactory<>(configProps, new StringDeserializer(),
         new JsonDeserializer<>(ChatMessage.class));
