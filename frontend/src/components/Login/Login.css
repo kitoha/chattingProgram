@@ -1,16 +1,16 @@
-/* 화면 전체를 채우는 컨테이너 */
+/* 로그인 컨테이너 스타일 */
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* 화면 높이 전체 사용 */
-  width: 100vw; /* 화면 너비 전체 사용 */
+  height: 100vh; /* 화면 전체 높이 */
+  width: 100vw;
   background-color: rgba(173, 216, 230, 0.5); /* 연한 파란색 배경 */
   margin: 0;
   padding: 0;
 }
 
-/* 로그인 박스 */
+/* 로그인 박스 스타일 */
 .login-box {
   width: 300px;
   padding: 20px;
@@ -22,16 +22,9 @@
   flex-direction: column;
 }
 
-/* 제목 */
-.title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-
-/* 입력 필드 */
+/* 입력 필드 스타일 */
 .input-field {
-  width: 100%; /* 입력 필드 너비를 100%로 설정 */
+  width: 100%;
   padding: 12px;
   margin-bottom: 10px;
   border: none;
@@ -40,12 +33,12 @@
   color: #555;
   font-size: 14px;
   outline: none;
-  box-sizing: border-box; /* padding이 width에 포함되도록 설정 */
+  box-sizing: border-box;
 }
 
-/* 로그인 버튼 (입력 필드와 같은 크기) */
+/* 로그인 버튼 스타일 */
 .login-button {
-  width: 100%; /* 입력 필드와 같은 너비 */
+  width: 100%;
   padding: 12px;
   border: none;
   border-radius: 5px;
@@ -54,9 +47,34 @@
   font-size: 16px;
   cursor: pointer;
   transition: background 0.3s ease;
-  box-sizing: border-box; /* padding이 width에 포함되도록 설정 */
+  box-sizing: border-box;
 }
 
 .login-button:hover {
   background-color: #0056b3;
+}
+
+/* 회원가입 안내 텍스트 */
+.register-text {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* 회원가입 버튼 스타일 */
+.register-button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #28a745;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: background 0.3s ease;
+}
+
+.register-button:hover {
+  background-color: #218838;
 }

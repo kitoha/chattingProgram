@@ -1,11 +1,16 @@
-import Login from "./components/Login/Login";
+import Login from "./components/Login/Login.js";
+import Register from "./components/Register/Register";
+import ChatList from "./components/Chat/ChatList";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 
 function App() {
   return (
-    <div className="app">
-      <Login />
-    </div>
+    <Routes>
+      <Route path="/" element={<ChatList />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+    </Routes>
   );
 }
 

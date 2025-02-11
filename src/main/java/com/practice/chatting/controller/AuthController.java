@@ -18,7 +18,6 @@ public class AuthController {
 
   private final UserService userService;
 
-
   @PostMapping("/register")
   public ResponseEntity<ResponseDto<String>> register(@RequestBody UserRequestDto userDto){
     ResponseDto<String> responseDto = userService.register(userDto);
@@ -30,5 +29,4 @@ public class AuthController {
     ResponseDto<String> responseDto = userService.login(userDto,request);
     return ResponseEntity.status(responseDto.getStatusCode()).body(responseDto);
   }
-
 }
