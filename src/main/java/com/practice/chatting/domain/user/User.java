@@ -1,5 +1,6 @@
 package com.practice.chatting.domain.user;
 
+import com.practice.chatting.domain.base.AuditableEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name="users")
 @NoArgsConstructor
-public class User {
+public class User extends AuditableEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

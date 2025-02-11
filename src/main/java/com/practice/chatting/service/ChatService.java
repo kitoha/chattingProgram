@@ -1,6 +1,7 @@
 package com.practice.chatting.service;
 
 import com.practice.chatting.domain.chat.ChatMessage;
+import com.practice.chatting.domain.chat.ChatRoom;
 import com.practice.chatting.domain.chat.Message;
 import com.practice.chatting.domain.user.User;
 import com.practice.chatting.repository.MessageRepository;
@@ -22,9 +23,8 @@ public class ChatService {
         .orElseThrow(() -> new RuntimeException("User not found"));
 
     Message message = Message.create(sender,
-        chatMessage.getReceiver(),
-        chatMessage.getContent(),
-        LocalDateTime.now());
+        new ChatRoom(),
+        chatMessage.getContent());
 
     messageRepository.save(message);
     return chatMessage;

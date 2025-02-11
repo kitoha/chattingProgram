@@ -1,5 +1,6 @@
 package com.practice.chatting.domain.friend;
 
+import com.practice.chatting.domain.base.AuditableEntity;
 import com.practice.chatting.domain.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class FriendRequest {
+public class FriendRequest extends AuditableEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
