@@ -44,10 +44,17 @@ public class FriendRequest extends AuditableEntity {
     return new FriendRequest(fromUser, toUser, RequestStatus.PENDING);
   }
 
-  public FriendRequest accept(){
+  public void accept(){
     if(this.status != RequestStatus.PENDING) {
       throw new IllegalStateException("이미 처리된 요청입니다.");
     }
-    return new FriendRequest(this.fromUser, this.toUser, RequestStatus.ACCEPTED);
+    this.status = RequestStatus.ACCEPTED;
+  }
+
+  public void reject(){
+    if(this.status != RequestStatus.PENDING){
+      throw new IllegalStateException("이미 처리된 요청입니다.");
+    }
+    this.status = RequestStatus.REJECTED;
   }
 }

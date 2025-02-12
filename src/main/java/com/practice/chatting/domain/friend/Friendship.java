@@ -27,4 +27,9 @@ public class Friendship extends AuditableEntity {
   @JoinColumn(name = "friend_id", nullable = false)
   private User friend;
 
+  public Friendship(User user, User friend){
+    this.user = user;
+    this.friend = friend;
+  }
+
 }
