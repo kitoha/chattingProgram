@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BottomNav from "../common/BottomNav";
 import "./ChatList.css";
 
 const ChatList = () => {
@@ -134,12 +135,7 @@ const ChatList = () => {
           ))}
       </div>
 
-      {/* 하단 네비게이션 */}
-      <nav className="bottom-nav">
-        <button onClick={() => navigate("/home")}>🏠 홈</button>
-        <button className="active">💬 채팅</button>
-        <button onClick={() => navigate("/profile")}>👤 내정보</button>
-      </nav>
+      <BottomNav activePage="chat" />
     </div>
   );
 };

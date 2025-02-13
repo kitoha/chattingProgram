@@ -4,12 +4,16 @@ import com.practice.chatting.domain.friend.FriendRequest;
 import com.practice.chatting.domain.friend.Friendship;
 import com.practice.chatting.domain.friend.RequestStatus;
 import com.practice.chatting.domain.user.User;
+import com.practice.chatting.dto.FriendDto;
+import com.practice.chatting.dto.FriendRequestResponseDto;
 import com.practice.chatting.dto.ResponseDto;
 import com.practice.chatting.repository.FriendRequestRepository;
 import com.practice.chatting.repository.FriendshipRepository;
 import com.practice.chatting.repository.UserRepository;
 import com.sun.jdi.request.DuplicateRequestException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,9 +28,9 @@ public class FriendService {
   private final UserRepository userRepository;
 
   @Transactional
-  public ResponseDto<String> sendFriendRequest(Long fromUserId, Long toUserId){
+  public ResponseDto<String> sendFriendRequest(String fromUsername, Long toUserId){
     try {
-      User fromUser = userRepository.findById(fromUserId)
+      User fromUser = userRepository.findByUsername(fromUsername)
           .orElseThrow(() -> new RuntimeException("User not found"));
       User toUser = userRepository.findById(toUserId)
           .orElseThrow(() -> new RuntimeException("Target user not found"));
@@ -47,7 +51,7 @@ public class FriendService {
       FriendRequest friendRequest = friendRequestRepository.findById(friendRequestId)
           .orElseThrow(() -> new RuntimeException("친구 요청을 찾을 수 없습니다. id: " + friendRequestId));
 
-      if (RequestStatus.PENDING.equals(friendRequest.getStatus())) {
+      if (!RequestStatus.PENDING.equals(friendRequest.getStatus())) {
         throw new RuntimeException("이미 처리된 친구 요청입니다.");
       }
 
@@ -88,6 +92,41 @@ public class FriendService {
       return ResponseDto.failure(HttpStatus.OK, "친구 삭제 요청이 성공하였습니다.");
     }catch (Exception e){
       return ResponseDto.failure(HttpStatus.INTERNAL_SERVER_ERROR, "친구 삭제 요청이 실패하였습니다.");
+    }
+  }
+
+  @Transactional(readOnly = true)
+  public ResponseDto<List<FriendDto>> getFriendList(String username){
+    try {
+      User user = userRepository.findByUsername(username)
+          .orElseThrow(() -> new RuntimeException("사용자 이름이 존재하지 않습니다."));
+      List<Friendship> friendships = friendshipRepository.findAllByUser(user);
+      List<FriendDto> friendDtoList = friendships.stream()
+          .map(friendship -> new FriendDto(friendship.getFriend().getId(),
+              friendship.getFriend().getUsername()))
+          .toList();
+      return ResponseDto.success(HttpStatus.OK,"목록 조회가 성공하였습니다." ,friendDtoList);
+    }catch (Exception e){
+      return ResponseDto.failure(HttpStatus.INTERNAL_SERVER_ERROR, "목록 조회가 실패하였습니다.");
+    }
+  }
+
+  @Transactional(readOnly = true)
+  public ResponseDto<List<FriendRequestResponseDto>> getFriendRequestList(String username){
+    try {
+      User user = userRepository.findByUsername(username)
+          .orElseThrow(() -> new RuntimeException("사용자 이름이 존재하지 않습니다."));
+      List<FriendRequest> requests = friendRequestRepository.findByToUserAndStatus(user,
+          RequestStatus.PENDING);
+      List<FriendRequestResponseDto> friendRequestResponseDtoList = requests.stream()
+          .map(request -> new FriendRequestResponseDto(request.getId(),
+              request.getFromUser().getId(),
+              request.getFromUser().getUsername(),
+              request.getCreatedAt()))
+          .toList();
+      return ResponseDto.success(HttpStatus.OK, "친구 요청 목록 조회 성공", friendRequestResponseDtoList);
+    }catch (Exception e){
+      return ResponseDto.failure(HttpStatus.INTERNAL_SERVER_ERROR, "친구 요청 목록 조회가 실패하였습니다.");
     }
   }
 

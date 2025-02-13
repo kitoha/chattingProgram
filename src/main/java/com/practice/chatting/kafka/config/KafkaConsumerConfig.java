@@ -16,7 +16,7 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 @Configuration
 public class KafkaConsumerConfig {
 
-  @Value(value = "${kafka.consumer.bootstrap-servers}")
+  @Value(value = "${spring.kafka.consumer.bootstrap-servers}")
   private String bootstrapSevers;
 
   private final static String GROUP_ID = "chatting_group";
