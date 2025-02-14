@@ -10,8 +10,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Entity
 @NoArgsConstructor
 public class ChatRoomUser {
@@ -34,6 +37,12 @@ public class ChatRoomUser {
   @Column(name = "left_at")
   private LocalDateTime leftAt;
 
-
+  @Builder
+  public ChatRoomUser(ChatRoom chatRoom, User user, LocalDateTime joinedAt, LocalDateTime leftAt){
+    this.chatRoom = chatRoom;
+    this.user = user;
+    this.joinedAt = joinedAt;
+    this.leftAt = leftAt;
+  }
 
 }

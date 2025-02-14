@@ -8,8 +8,11 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Entity
 @NoArgsConstructor
 public class ChatRoom extends AuditableEntity {
@@ -23,5 +26,11 @@ public class ChatRoom extends AuditableEntity {
 
   @Column(name = "name")
   private String name;
+
+  @Builder
+  public ChatRoom(RoomType roomType, String name){
+    this.roomType = roomType;
+    this.name = name;
+  }
 
 }

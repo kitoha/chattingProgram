@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,14 +35,11 @@ public class Message extends AuditableEntity {
   @Column(nullable = false)
   private String content;
 
+  @Builder
   private Message(User sender,ChatRoom chatRoom, String content){
-    this.sender = Objects.requireNonNull(sender, "sender must not be null");
-    this.chatRoom = Objects.requireNonNull(chatRoom, "chatRoom must not be null");
-    this.content = Objects.requireNonNull(content, "content must not be null");
-  }
-
-  public static Message create(User sender,ChatRoom chatRoom, String content){
-    return new Message(sender,chatRoom, content);
+    this.sender = sender;
+    this.chatRoom = chatRoom;
+    this.content = content;
   }
 
 }

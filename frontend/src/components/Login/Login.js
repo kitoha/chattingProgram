@@ -26,7 +26,7 @@ const Login = () => {
 
     if (response.statusCode === 200) {
       alert("로그인 성공!");
-      navigate("/dashboard");
+      navigate("/chatlist");
     } else {
       setError(response.message || "로그인 실패");
     }

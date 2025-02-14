@@ -1,98 +1,106 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import BottomNav from "../common/BottomNav";
-import "./FriendList.css"; // 스타일 파일
+import ConfirmModal from "../common/ConfirmModal";
+import "./FriendList.css";
 
 const FriendList = () => {
-  // 친구 목록
-  const [friends, setFriends] = useState([
-    { id: 1, name: "김철수", img: "/images/friend1.jpg" },
-    { id: 2, name: "이영희", img: "/images/friend2.jpg" },
-  ]);
+  const navigate = useNavigate();
+  const [friends, setFriends] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const BASE_URL = "http://localhost:8080";
 
-  // 친구 추가 팝업 상태
-  const [showPopup, setShowPopup] = useState(false);
-  const [newFriendName, setNewFriendName] = useState("");
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/api/friends`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        });
 
-  // 팝업 열기
-  const openPopup = () => {
-    setShowPopup(true);
-    setNewFriendName("");
-  };
+        const result = await response.json();
 
-  // 팝업 닫기
-  const closePopup = () => {
-    setShowPopup(false);
-  };
-
-  // 친구 추가
-  const addFriend = () => {
-    if (newFriendName.trim() === "") {
-      alert("친구 이름을 입력해주세요!");
-      return;
-    }
-
-    const newFriend = {
-      id: friends.length + 1,
-      name: newFriendName,
-      img: "/images/default-avatar.png",
+        if (response.ok) {
+          setFriends(result.data);
+        } else {
+          throw new Error(result.message);
+        }
+      } catch (error) {
+        setError("친구 목록을 불러오지 못했습니다.");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    setFriends([...friends, newFriend]);
-    closePopup();
+    fetchFriends();
+  }, []);
+
+  const startChat = async (friendId) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/chatrooms/one-to-one`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(friendId),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        const chatRoomId = result.data.id;
+        navigate(`/chat/${chatRoomId}`);
+      } else {
+        throw new Error("채팅방 개설에 실패했습니다.");
+      }
+    } catch (error) {
+      alert("서버 오류가 발생했습니다.");
+    }
   };
 
   return (
     <div className="friend-container">
-      {/* 헤더 */}
       <header className="friend-header">
         <h2>친구 목록</h2>
-        <button className="add-friend-button" onClick={openPopup}>
-          + 친구 추가
-        </button>
       </header>
 
-      {/* 팝업 창 */}
-      {showPopup && (
-        <div className="popup-overlay">
-          <div className="popup-content">
-            {/* ✅ 팝업 헤더 */}
-            <h3 className="popup-title">친구 추가</h3>
-
-            {/* ✅ 입력란 */}
-            <input
-              type="text"
-              placeholder="친구 이름 입력"
-              value={newFriendName}
-              onChange={(e) => setNewFriendName(e.target.value)}
-              className="popup-input"
-            />
-
-            {/* ✅ 버튼 영역 */}
-            <div className="popup-buttons">
-              <button className="popup-add-button" onClick={addFriend}>
-                추가
-              </button>
-              <button className="popup-cancel-button" onClick={closePopup}>
-                취소
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 친구 목록 */}
       <div className="friend-list">
-        {friends.map((friend) => (
-          <div key={friend.id} className="friend-item">
-            <img src={friend.img} alt={friend.name} className="friend-avatar" />
-            <div className="friend-info">
-              <div className="friend-name">{friend.name}</div>
+        {loading ? (
+          <p className="loading-text">친구 목록을 불러오는 중...</p>
+        ) : error ? (
+          <p className="error-text">{error}</p>
+        ) : friends.length > 0 ? (
+          friends.map((friend) => (
+            <div key={friend.friendId} className="friend-item">
+              <img
+                src="/images/default-avatar.png"
+                alt={friend.friendUsername}
+                className="friend-avatar"
+              />
+              <div className="friend-info">
+                <div className="friend-name">{friend.friendUsername}</div>
+              </div>
+              <div className="button-container">
+                <button
+                  className="chat-button"
+                  onClick={() => startChat(friend.friendId)}
+                >
+                  대화하기
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className="no-friends">친구가 없습니다.</p>
+        )}
       </div>
 
-      {/* 하단 네비게이션 */}
       <BottomNav activePage="friends" />
     </div>
   );
