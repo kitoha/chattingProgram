@@ -1,5 +1,6 @@
 package com.practice.chatting.domain.friend;
 
+import com.practice.chatting.domain.base.AuditableEntity;
 import com.practice.chatting.domain.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class FriendRequest {
+public class FriendRequest extends AuditableEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -43,10 +44,17 @@ public class FriendRequest {
     return new FriendRequest(fromUser, toUser, RequestStatus.PENDING);
   }
 
-  public FriendRequest accept(){
+  public void accept(){
     if(this.status != RequestStatus.PENDING) {
       throw new IllegalStateException("이미 처리된 요청입니다.");
     }
-    return new FriendRequest(this.fromUser, this.toUser, RequestStatus.ACCEPTED);
+    this.status = RequestStatus.ACCEPTED;
+  }
+
+  public void reject(){
+    if(this.status != RequestStatus.PENDING){
+      throw new IllegalStateException("이미 처리된 요청입니다.");
+    }
+    this.status = RequestStatus.REJECTED;
   }
 }

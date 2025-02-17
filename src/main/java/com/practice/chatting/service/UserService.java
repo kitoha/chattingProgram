@@ -56,7 +56,7 @@ public class UserService {
       HttpSession session = request.getSession(true);
       session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
 
-      return ResponseDto.success(HttpStatus.OK, "Logged in successfully",null);
+      return ResponseDto.success(HttpStatus.OK, "Logged in successfully",userDetails.getUsername());
     } catch (Exception ex) {
       return ResponseDto.failure(HttpStatus.UNAUTHORIZED, "Invalid credentials");
     }

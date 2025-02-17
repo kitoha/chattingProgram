@@ -1,6 +1,5 @@
 package com.practice.chatting.domain.chat;
 
-import com.practice.chatting.domain.base.AuditableEntity;
 import com.practice.chatting.domain.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,15 +10,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Getter
+@Entity
 @NoArgsConstructor
-public class Message extends AuditableEntity {
+public class ChatRoomUser {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -29,17 +28,21 @@ public class Message extends AuditableEntity {
   private ChatRoom chatRoom;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "sender_id", nullable = false)
-  private User sender;
+  @JoinColumn(name = "user_id",nullable = false)
+  private User user;
 
-  @Column(nullable = false)
-  private String content;
+  @Column(name = "joined_at", nullable = false)
+  private LocalDateTime joinedAt;
+
+  @Column(name = "left_at")
+  private LocalDateTime leftAt;
 
   @Builder
-  private Message(User sender,ChatRoom chatRoom, String content){
-    this.sender = sender;
+  public ChatRoomUser(ChatRoom chatRoom, User user, LocalDateTime joinedAt, LocalDateTime leftAt){
     this.chatRoom = chatRoom;
-    this.content = content;
+    this.user = user;
+    this.joinedAt = joinedAt;
+    this.leftAt = leftAt;
   }
 
 }

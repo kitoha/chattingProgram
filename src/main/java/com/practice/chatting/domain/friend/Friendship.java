@@ -1,8 +1,7 @@
-package com.practice.chatting.domain.chat;
+package com.practice.chatting.domain.friend;
 
 import com.practice.chatting.domain.base.AuditableEntity;
 import com.practice.chatting.domain.user.User;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -10,36 +9,29 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalDateTime;
-import java.util.Objects;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class Message extends AuditableEntity {
+public class Friendship extends AuditableEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "chat_room_id", nullable = false)
-  private ChatRoom chatRoom;
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "sender_id", nullable = false)
-  private User sender;
+  @JoinColumn(name = "friend_id", nullable = false)
+  private User friend;
 
-  @Column(nullable = false)
-  private String content;
-
-  @Builder
-  private Message(User sender,ChatRoom chatRoom, String content){
-    this.sender = sender;
-    this.chatRoom = chatRoom;
-    this.content = content;
+  public Friendship(User user, User friend){
+    this.user = user;
+    this.friend = friend;
   }
 
 }

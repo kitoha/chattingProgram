@@ -26,6 +26,13 @@ spring:
       flush-mode: on_save
       namespace: spring:session
 
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+    consumer:
+      bootstrap-servers: localhost:9093
+
+
 server:
   servlet:
     session:
