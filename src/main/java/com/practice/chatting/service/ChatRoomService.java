@@ -14,10 +14,8 @@ import com.practice.chatting.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +34,7 @@ public class ChatRoomService {
           .orElseThrow(() -> new RuntimeException("User not found"));
       Long fromUserId = user.getId();
       Optional<ChatRoom> existingRoom = chatRoomRepository.findOneToOneChatRoom(toUserId,
-          fromUserId, RoomType.ONE_TO_OEN);
+          fromUserId, RoomType.ONE_TO_ONE);
       ChatRoom chatRoom = existingRoom.orElseGet(
           () -> createOneToOneChatRoom(toUserId, fromUserId));
       ChatRoomDto chatRoomDto = ChatRoomDto.builder()
@@ -52,7 +50,7 @@ public class ChatRoomService {
 
   private ChatRoom createOneToOneChatRoom(Long toUserId, Long fromUserId) {
     ChatRoom chatRoom = ChatRoom.builder()
-        .roomType(RoomType.ONE_TO_OEN)
+        .roomType(RoomType.ONE_TO_ONE)
         .name(null)
         .build();
 

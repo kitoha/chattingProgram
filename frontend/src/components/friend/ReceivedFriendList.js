@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
 import BottomNav from "../common/BottomNav";
-import "./ReceivedFriendList.css";
+import { UserIcon } from "@heroicons/react/24/solid";
 
 const ReceivedFriendList = () => {
-  // 받은 친구 요청 목록 상태
   const [friendRequests, setFriendRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // API 호출 시 사용할 BASE_URL 설정
   const BASE_URL = "http://localhost:8080";
 
-  // 친구 요청 목록 API 호출
   useEffect(() => {
     const fetchFriendRequests = async () => {
       try {
@@ -41,7 +37,6 @@ const ReceivedFriendList = () => {
     fetchFriendRequests();
   }, []);
 
-  // 친구 요청 수락 (ProcessFriendRequestDto 사용)
   const acceptRequest = async (requestId) => {
     try {
       const response = await fetch(`${BASE_URL}/api/friends/request/accept`, {
@@ -56,7 +51,7 @@ const ReceivedFriendList = () => {
 
       if (response.ok) {
         setFriendRequests(
-          friendRequests.filter((request) => request.requestId !== requestId)
+          friendRequests.filter((req) => req.requestId !== requestId)
         );
         alert("친구 요청을 수락했습니다!");
       } else {
@@ -81,7 +76,7 @@ const ReceivedFriendList = () => {
 
       if (response.ok) {
         setFriendRequests(
-          friendRequests.filter((request) => request.requestId !== requestId)
+          friendRequests.filter((req) => req.requestId !== requestId)
         );
         alert("친구 요청을 거절했습니다.");
       } else {
@@ -93,50 +88,59 @@ const ReceivedFriendList = () => {
   };
 
   return (
-    <div className="received-container">
-      {/* 헤더 */}
-      <header className="received-header">
-        <h2>받은 친구 요청</h2>
+    <div className="min-h-screen bg-gray-100 flex flex-col">
+      <header className="bg-white shadow-md p-4 flex items-center justify-between">
+        <h2 className="text-lg font-bold text-gray-900">받은 친구 요청</h2>
       </header>
 
-      {/* 로딩 상태 */}
       {loading && (
-        <p className="loading-text">친구 요청 목록을 불러오는 중...</p>
+        <p className="text-center text-gray-600 mt-4">
+          친구 요청 목록을 불러오는 중...
+        </p>
       )}
-      {error && <p className="error-text">{error}</p>}
+      {error && <p className="text-center text-red-500 mt-4">{error}</p>}
 
-      {/* 받은 친구 요청 목록 */}
-      <div className="received-list">
+      <div className="flex-1 overflow-y-auto p-4">
         {friendRequests.length > 0 ? (
           friendRequests.map((request) => (
-            <div key={request.requestId} className="received-item">
-              {/* ✅ 아이콘 사용 */}
-              <div className="received-icon">👤</div>
-              <div className="received-info">
-                <div className="received-name">{request.fromUsername}</div>
+            <div
+              key={request.requestId}
+              className="bg-white shadow-md rounded-lg p-4 flex items-center justify-between mb-4"
+            >
+              <div className="flex items-center space-x-4">
+                <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
+                  <UserIcon className="w-6 h-6 text-gray-700" />
+                </div>
+                <div>
+                  <span className="text-lg font-semibold text-gray-900">
+                    {request.fromUsername}
+                  </span>
+                  <p className="text-sm text-gray-500">친구 요청</p>
+                </div>
               </div>
-              <div className="button-container">
+              <div className="flex space-x-2">
                 <button
-                  className="accept-button"
+                  className="bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-semibold"
                   onClick={() => acceptRequest(request.requestId)}
                 >
-                  ✔
+                  ✔ 수락
                 </button>
                 <button
-                  className="reject-button"
+                  className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-semibold"
                   onClick={() => rejectRequest(request.requestId)}
                 >
-                  ✖
+                  ✖ 거절
                 </button>
               </div>
             </div>
           ))
         ) : (
-          <p className="no-requests">받은 친구 요청이 없습니다.</p>
+          <p className="text-center text-gray-500 mt-4">
+            받은 친구 요청이 없습니다.
+          </p>
         )}
       </div>
 
-      {/* 하단 네비게이션 */}
       <BottomNav activePage="requests" />
     </div>
   );

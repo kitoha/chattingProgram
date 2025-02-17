@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { login } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
-import "./Login.css";
+import { useDispatch } from "react-redux";
+import { setUser } from "../common/userSlice";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const Login = () => {
 
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({
@@ -26,6 +28,7 @@ const Login = () => {
 
     if (response.statusCode === 200) {
       alert("로그인 성공!");
+      dispatch(setUser(response.data));
       navigate("/chatlist");
     } else {
       setError(response.message || "로그인 실패");
@@ -33,38 +36,51 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
-      <div className="login-box">
-        <h2 className="title">CHAT</h2>
-        {error && <p className="error-message">{error}</p>}
-        <input
-          type="text"
-          name="username"
-          placeholder="사용자 이름"
-          className="input-field"
-          onChange={handleChange}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="이메일"
-          className="input-field"
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="비밀번호"
-          className="input-field"
-          onChange={handleChange}
-        />
-        <button className="login-button" onClick={handleSubmit}>
+    <div className="flex min-h-screen bg-gray-100 items-center justify-center">
+      <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
+        <h2 className="text-2xl font-bold text-center text-gray-900">로그인</h2>
+
+        {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+
+        <div className="mt-4">
+          <input
+            type="text"
+            name="username"
+            placeholder="사용자 이름"
+            className="w-full p-3 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mt-4">
+          <input
+            type="email"
+            name="email"
+            placeholder="이메일"
+            className="w-full p-3 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mt-4">
+          <input
+            type="password"
+            name="password"
+            placeholder="비밀번호"
+            className="w-full p-3 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={handleChange}
+          />
+        </div>
+
+        <button
+          className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg mt-6"
+          onClick={handleSubmit}
+        >
           로그인
         </button>
 
-        <p className="register-text">계정이 없으신가요?</p>
+        <p className="text-center text-gray-600 mt-4">계정이 없으신가요?</p>
+
         <button
-          className="register-button"
+          className="w-full bg-gray-300 hover:bg-gray-400 text-gray-900 font-semibold py-3 rounded-lg mt-2"
           onClick={() => navigate("/register")}
         >
           회원가입
