@@ -102,7 +102,6 @@ const ChatRoom = () => {
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
-      {/* 헤더 */}
       <header className="bg-white shadow-md p-4 flex items-center justify-between">
         <button
           className="text-gray-700 hover:text-gray-900"
@@ -111,11 +110,10 @@ const ChatRoom = () => {
           ←
         </button>
         <h2 className="text-lg font-bold text-gray-900">채팅방</h2>
-        <div></div> {/* 빈 공간 */}
+        <div></div>
       </header>
 
-      {/* 채팅 메시지 리스트 */}
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-4 max-h-[calc(100vh-120px)]">
         {messages.map((msg, index) => (
           <div
             key={index}
@@ -137,8 +135,7 @@ const ChatRoom = () => {
         <div ref={chatEndRef} />
       </div>
 
-      {/* 메시지 입력창 */}
-      <div className="bg-white p-3 flex items-center border-t">
+      <div className="bg-white p-3 flex items-center border-t sticky bottom-16 mb-4">
         <input
           type="text"
           placeholder="메시지를 입력하세요..."

@@ -14,6 +14,7 @@ import com.practice.chatting.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -106,15 +107,40 @@ public class ChatRoomService {
       List<ChatRoomUser> chatRoomUserList = chatRoomUserRepository.findByUserAndLeftAtIsNull(user);
       List<ChatRoomDto> chatRoomDtoList = chatRoomUserList.stream()
           .map(ChatRoomUser::getChatRoom)
-          .map(chatRoom -> ChatRoomDto.builder()
-              .id(chatRoom.getId())
-              .roomType(chatRoom.getRoomType())
-              .name(chatRoom.getName())
-              .build())
-          .toList();
+          .map(this::convertToChatRoomDto)
+          .collect(Collectors.toList());
+      
       return ResponseDto.success(HttpStatus.OK, "채팅방 목록 조회 성공", chatRoomDtoList);
     }catch (Exception e){
       return ResponseDto.failure(HttpStatus.INTERNAL_SERVER_ERROR, "채팅창 목록 조회 실패");
     }
+  }
+
+  private ChatRoomDto convertToChatRoomDto(ChatRoom chatRoom){
+    ChatMessageDto lastMessageDto = getLastMessageDto(chatRoom);
+    int participantCount = getParticipantCount(chatRoom);
+
+    return ChatRoomDto.builder()
+        .id(chatRoom.getId())
+        .roomType(chatRoom.getRoomType())
+        .name(chatRoom.getName())
+        .lastMessage(lastMessageDto)
+        .participantCount(participantCount)
+        .build();
+  }
+
+  private ChatMessageDto getLastMessageDto(ChatRoom chatRoom){
+    return messageRepository.findTopByChatRoomOrderByCreatedAtDesc(chatRoom)
+        .map(message -> ChatMessageDto.builder()
+            .chatRoomId(chatRoom.getId())
+            .sender(message.getSender().getUsername())
+            .content(message.getContent())
+            .createdAt(message.getCreatedAt())
+            .build())
+        .orElse(null);
+  }
+
+  private int getParticipantCount(ChatRoom chatRoom){
+    return chatRoomUserRepository.countByChatRoomAndLeftAtIsNull(chatRoom);
   }
 }

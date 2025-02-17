@@ -51,9 +51,13 @@ const ChatList = () => {
     fetchChatRooms();
   }, [currentUser]);
 
+  const truncateMessage = (message) => {
+    if (!message) return "메시지가 없습니다.";
+    return message.length > 20 ? message.substring(0, 20) + "..." : message;
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
-      {/* 헤더 */}
       <header className="bg-white shadow-md p-4 flex items-center justify-between">
         <button
           className="text-gray-700 hover:text-gray-900"
@@ -62,10 +66,9 @@ const ChatList = () => {
           ←
         </button>
         <h2 className="text-lg font-bold text-gray-900">채팅 목록</h2>
-        <div></div> {/* 빈 공간 */}
+        <div></div>
       </header>
 
-      {/* 탭 네비게이션 */}
       <div className="flex justify-around bg-white shadow-md p-2">
         <button
           className={`px-4 py-2 rounded-lg text-sm font-semibold ${
@@ -89,7 +92,6 @@ const ChatList = () => {
         </button>
       </div>
 
-      {/* 로딩 및 오류 메시지 */}
       {loading && (
         <p className="text-center text-gray-600 mt-4">
           채팅 목록을 불러오는 중...
@@ -97,7 +99,6 @@ const ChatList = () => {
       )}
       {error && <p className="text-center text-red-500 mt-4">{error}</p>}
 
-      {/* 채팅 리스트 */}
       <div className="flex-1 overflow-y-auto p-4">
         {activeTab === "oneToOne" &&
           oneToOneChats.map((room) => (
@@ -107,9 +108,11 @@ const ChatList = () => {
             >
               <div className="flex flex-col">
                 <span className="text-lg font-semibold text-gray-900">
-                  {room.name}
+                  {room.name || "1:1 채팅"}
                 </span>
-                <span className="text-sm text-gray-500">안녕하세요</span>
+                <span className="text-sm text-gray-500">
+                  {truncateMessage(room.lastMessage?.content)}
+                </span>
               </div>
               <div className="flex space-x-2">
                 <button
@@ -135,7 +138,9 @@ const ChatList = () => {
                 <span className="text-lg font-semibold text-gray-900">
                   {room.name}
                 </span>
-                <span className="text-sm text-gray-500">안녕하세요</span>
+                <span className="text-sm text-gray-500">
+                  {truncateMessage(room.lastMessage?.content)}
+                </span>
               </div>
               <div className="flex space-x-2">
                 <button
@@ -147,13 +152,14 @@ const ChatList = () => {
                 <button className="bg-gray-300 text-gray-900 px-4 py-2 rounded-lg text-sm font-semibold">
                   나가기
                 </button>
-                <span className="text-sm text-gray-500">{room.members}명</span>
+                <span className="text-sm text-gray-500">
+                  {room.participantCount}명
+                </span>
               </div>
             </div>
           ))}
       </div>
 
-      {/* 하단 네비게이션 */}
       <BottomNav activePage="chat" />
     </div>
   );
