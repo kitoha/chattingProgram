@@ -2,6 +2,7 @@ package com.practice.chatting.controller;
 
 import com.practice.chatting.dto.ChatMessageDto;
 import com.practice.chatting.dto.ChatRoomDto;
+import com.practice.chatting.dto.GroupChatRoomRequestDto;
 import com.practice.chatting.dto.ResponseDto;
 import com.practice.chatting.repository.MessageRepository;
 import com.practice.chatting.service.ChatRoomService;
@@ -39,6 +40,19 @@ public class ChatRoomController {
   @PostMapping("/one-to-one")
   public ResponseEntity<ResponseDto<ChatRoomDto>> getOrCreateOneToOneChatRoom(Principal principal,@RequestBody Long toUserId){
     ResponseDto<ChatRoomDto> responseDto = chatRoomService.getOrCreateOneToOneChatRoom(toUserId, principal.getName());
+    return ResponseEntity.status(responseDto.getStatusCode()).body(responseDto);
+  }
+
+  @PostMapping("/group")
+  public ResponseEntity<ResponseDto<ChatRoomDto>> getOrCreateGroupChatRoom(Principal principal, @RequestBody
+      GroupChatRoomRequestDto groupChatRoomRequestDto){
+    ResponseDto<ChatRoomDto> responseDto = chatRoomService.createGroupChatRoom(groupChatRoomRequestDto,principal.getName());
+    return ResponseEntity.status(responseDto.getStatusCode()).body(responseDto);
+  }
+
+  @PostMapping("/leave")
+  public ResponseEntity<ResponseDto<String>> leaveChatRoom(@RequestBody Long chatRoomId, Principal principal){
+    ResponseDto<String> responseDto = chatRoomService.leaveChatRoom(chatRoomId, principal.getName());
     return ResponseEntity.status(responseDto.getStatusCode()).body(responseDto);
   }
 

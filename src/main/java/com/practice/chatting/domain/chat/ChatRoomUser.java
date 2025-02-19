@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Entity
@@ -34,6 +35,7 @@ public class ChatRoomUser {
   @Column(name = "joined_at", nullable = false)
   private LocalDateTime joinedAt;
 
+  @Setter
   @Column(name = "left_at")
   private LocalDateTime leftAt;
 

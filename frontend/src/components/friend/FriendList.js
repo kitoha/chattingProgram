@@ -166,24 +166,24 @@ const FriendList = () => {
         ) : friends.length > 0 ? (
           friends.map((friend) => (
             <div
-              key={friend.friendId}
+              key={friend.id}
               className="bg-white shadow-md rounded-lg p-4 flex items-center justify-between mb-4"
             >
               <div className="flex items-center space-x-4">
                 <span className="text-lg font-semibold text-gray-900">
-                  {friend.friendUsername}
+                  {friend.name}
                 </span>
               </div>
               <div className="flex space-x-2">
                 <button
                   className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-semibold"
-                  onClick={() => navigate(`/chat/${friend.friendId}`)}
+                  onClick={() => navigate(`/chat/${friend.id}`)}
                 >
                   대화하기
                 </button>
                 <button
                   className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-semibold"
-                  onClick={() => deleteFriend(friend.friendId)}
+                  onClick={() => deleteFriend(friend.id)}
                 >
                   삭제
                 </button>

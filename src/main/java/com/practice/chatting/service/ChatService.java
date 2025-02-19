@@ -29,6 +29,7 @@ public class ChatService {
 
     Message message = Message.builder()
         .chatRoom(chatRoom)
+        .messageType(chatMessage.getMessageType())
         .sender(sender)
         .content(chatMessage.getContent())
         .build();

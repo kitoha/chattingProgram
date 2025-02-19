@@ -33,7 +33,6 @@ const ChatRoom = () => {
             },
           }
         );
-
         const result = await response.json();
         if (response.ok) {
           setMessages(result.data);
@@ -86,6 +85,7 @@ const ChatRoom = () => {
       chatRoomId: Number(chatRoomId),
       sender: currentUser,
       content: newMessage,
+      messageType: "CHAT",
     };
 
     stompClient.publish({
@@ -114,24 +114,36 @@ const ChatRoom = () => {
       </header>
 
       <div className="flex-1 overflow-y-auto p-4 max-h-[calc(100vh-120px)]">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`flex ${
-              msg.sender === currentUser ? "justify-end" : "justify-start"
-            } mb-2`}
-          >
+        {messages.map((msg, index) => {
+          if (msg.messageType === "LEAVE") {
+            return (
+              <div key={index} className="w-full flex justify-center mb-2">
+                <div className="block mx-auto bg-gray-200 text-gray-600 text-xs italic px-3 py-1 rounded-full text-center">
+                  {msg.content}
+                </div>
+              </div>
+            );
+          }
+
+          return (
             <div
-              className={`rounded-lg p-3 max-w-xs ${
-                msg.sender === currentUser
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-300 text-gray-800"
-              }`}
+              key={index}
+              className={`flex ${
+                msg.sender === currentUser ? "justify-end" : "justify-start"
+              } mb-2`}
             >
-              {msg.content}
+              <div
+                className={`rounded-lg p-3 max-w-xs ${
+                  msg.sender === currentUser
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-300 text-gray-800"
+                }`}
+              >
+                {msg.content}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
         <div ref={chatEndRef} />
       </div>
 

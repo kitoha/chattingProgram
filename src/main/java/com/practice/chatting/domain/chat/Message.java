@@ -4,6 +4,8 @@ import com.practice.chatting.domain.base.AuditableEntity;
 import com.practice.chatting.domain.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,11 +37,16 @@ public class Message extends AuditableEntity {
   @Column(nullable = false)
   private String content;
 
+  @Enumerated(EnumType.STRING)
+  @Column(name = "message_type", nullable = false)
+  private MessageType messageType;
+
   @Builder
-  private Message(User sender,ChatRoom chatRoom, String content){
+  private Message(User sender,ChatRoom chatRoom, String content, MessageType messageType){
     this.sender = sender;
     this.chatRoom = chatRoom;
     this.content = content;
+    this.messageType = messageType;
   }
 
 }
