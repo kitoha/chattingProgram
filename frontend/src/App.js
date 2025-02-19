@@ -1,9 +1,9 @@
-import Login from "./components/login/Login.js";
-import Register from "./components/register/Register";
-import ChatList from "./components/chat/ChatList";
+import Login from "./components/Login/Login";
+import Register from "./components/Register/Register";
+import ChatList from "./components/Chat/ChatList";
 import FriendList from "./components/friend/FriendList";
 import ReceivedFriendList from "./components/friend/ReceivedFriendList";
-import ChatRoom from "./components/chat/ChatRoom";
+import ChatRoom from "./components/Chat/ChatRoom";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 
