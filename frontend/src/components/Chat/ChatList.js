@@ -12,14 +12,12 @@ const ChatList = () => {
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.user.username);
 
-  // 채팅 목록 관련 상태
   const [activeTab, setActiveTab] = useState("oneToOne");
   const [oneToOneChats, setOneToOneChats] = useState([]);
   const [groupChats, setGroupChats] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 그룹 생성 및 친구 목록 관련 상태
   const [showFriendModal, setShowFriendModal] = useState(false);
   const [friends, setFriends] = useState([]);
   const [friendLoading, setFriendLoading] = useState(false);
@@ -130,7 +128,6 @@ const ChatList = () => {
     setGroupName("");
   };
 
-  // 나가기 버튼 클릭 시 호출할 함수 (백엔드 API: /api/chatrooms/leave)
   const leaveChatRoom = async (chatRoomId) => {
     try {
       const response = await fetch(`${BASE_URL}/api/chatrooms/leave`, {
@@ -140,7 +137,6 @@ const ChatList = () => {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        // 요청 바디는 chatRoomId (숫자)
         body: JSON.stringify(chatRoomId),
       });
       const result = await response.json();
