@@ -25,3 +25,7 @@
 
 ![Image](https://github.com/user-attachments/assets/b44174d0-2326-4c6b-bd91-f44946f258da)
 
+## ERD
+
+![Image](https://github.com/user-attachments/assets/f56db955-b571-447e-8fca-b0966decd2e1)
+
