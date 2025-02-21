@@ -1,4 +1,4 @@
-package com.practice.chatting.repository;
+package com.practice.chatting.repository.user;
 
 import com.practice.chatting.domain.user.User;
 import java.util.Optional;

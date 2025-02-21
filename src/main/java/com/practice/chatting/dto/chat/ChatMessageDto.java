@@ -1,4 +1,4 @@
-package com.practice.chatting.dto;
+package com.practice.chatting.dto.chat;
 
 import com.practice.chatting.domain.chat.MessageType;
 import java.time.LocalDateTime;

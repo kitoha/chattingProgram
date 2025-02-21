@@ -1,4 +1,4 @@
-package com.practice.chatting.dto;
+package com.practice.chatting.dto.chat;
 
 import java.util.List;
 import lombok.Getter;

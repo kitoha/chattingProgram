@@ -1,7 +1,7 @@
-package com.practice.chatting.controller;
+package com.practice.chatting.controller.chat;
 
 import com.practice.chatting.domain.chat.ChatMessage;
-import com.practice.chatting.service.ChatService;
+import com.practice.chatting.service.chat.ChatService;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;

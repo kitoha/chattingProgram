@@ -1,10 +1,10 @@
 package com.practice.chatting.converter;
 
 import com.practice.chatting.domain.chat.ChatRoom;
-import com.practice.chatting.dto.ChatMessageDto;
-import com.practice.chatting.dto.ChatRoomDto;
-import com.practice.chatting.repository.ChatRoomUserRepository;
-import com.practice.chatting.repository.MessageRepository;
+import com.practice.chatting.dto.chat.ChatMessageDto;
+import com.practice.chatting.dto.chat.ChatRoomDto;
+import com.practice.chatting.repository.chat.ChatRoomUserRepository;
+import com.practice.chatting.repository.message.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

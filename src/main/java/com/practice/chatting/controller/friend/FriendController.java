@@ -1,9 +1,9 @@
-package com.practice.chatting.controller;
+package com.practice.chatting.controller.friend;
 
-import com.practice.chatting.dto.FriendDto;
-import com.practice.chatting.dto.FriendRequestResponseDto;
-import com.practice.chatting.dto.ProcessFriendRequestDto;
-import com.practice.chatting.dto.ResponseDto;
+import com.practice.chatting.dto.friend.FriendDto;
+import com.practice.chatting.dto.friend.FriendRequestResponseDto;
+import com.practice.chatting.dto.friend.ProcessFriendRequestDto;
+import com.practice.chatting.dto.common.ResponseDto;
 import com.practice.chatting.service.friend.FriendService;
 import java.security.Principal;
 import java.util.List;

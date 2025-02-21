@@ -1,4 +1,4 @@
-package com.practice.chatting.dto;
+package com.practice.chatting.dto.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

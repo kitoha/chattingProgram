@@ -1,7 +1,7 @@
-package com.practice.chatting.service;
+package com.practice.chatting.service.user;
 
 import com.practice.chatting.domain.user.User;
-import com.practice.chatting.repository.UserRepository;
+import com.practice.chatting.repository.user.UserRepository;
 import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,4 +1,4 @@
-package com.practice.chatting.repository;
+package com.practice.chatting.repository.chat;
 
 import com.practice.chatting.domain.chat.ChatRoom;
 import com.practice.chatting.domain.chat.RoomType;

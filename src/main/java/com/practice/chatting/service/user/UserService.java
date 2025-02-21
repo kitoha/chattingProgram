@@ -1,9 +1,9 @@
-package com.practice.chatting.service;
+package com.practice.chatting.service.user;
 
 import com.practice.chatting.domain.user.User;
-import com.practice.chatting.dto.ResponseDto;
-import com.practice.chatting.dto.UserRequestDto;
-import com.practice.chatting.repository.UserRepository;
+import com.practice.chatting.dto.common.ResponseDto;
+import com.practice.chatting.dto.user.UserRequestDto;
+import com.practice.chatting.repository.user.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

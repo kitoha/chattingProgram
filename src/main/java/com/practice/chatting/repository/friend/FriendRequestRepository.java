@@ -1,4 +1,4 @@
-package com.practice.chatting.repository;
+package com.practice.chatting.repository.friend;
 
 import com.practice.chatting.domain.friend.FriendRequest;
 import com.practice.chatting.domain.friend.RequestStatus;

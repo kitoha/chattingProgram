@@ -1,12 +1,12 @@
-package com.practice.chatting.service;
+package com.practice.chatting.service.chat;
 
 import com.practice.chatting.domain.chat.ChatMessage;
 import com.practice.chatting.domain.chat.ChatRoom;
 import com.practice.chatting.domain.chat.Message;
 import com.practice.chatting.domain.user.User;
-import com.practice.chatting.repository.ChatRoomRepository;
-import com.practice.chatting.repository.MessageRepository;
-import com.practice.chatting.repository.UserRepository;
+import com.practice.chatting.repository.chat.ChatRoomRepository;
+import com.practice.chatting.repository.message.MessageRepository;
+import com.practice.chatting.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

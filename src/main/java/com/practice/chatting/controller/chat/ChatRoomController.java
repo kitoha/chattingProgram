@@ -1,11 +1,11 @@
-package com.practice.chatting.controller;
+package com.practice.chatting.controller.chat;
 
-import com.practice.chatting.dto.ChatMessageDto;
-import com.practice.chatting.dto.ChatRoomDto;
-import com.practice.chatting.dto.GroupChatRoomRequestDto;
-import com.practice.chatting.dto.ResponseDto;
-import com.practice.chatting.repository.MessageRepository;
-import com.practice.chatting.service.ChatRoomService;
+import com.practice.chatting.dto.chat.ChatMessageDto;
+import com.practice.chatting.dto.chat.ChatRoomDto;
+import com.practice.chatting.dto.chat.GroupChatRoomRequestDto;
+import com.practice.chatting.dto.common.ResponseDto;
+import com.practice.chatting.repository.message.MessageRepository;
+import com.practice.chatting.service.chat.ChatRoomService;
 import java.security.Principal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

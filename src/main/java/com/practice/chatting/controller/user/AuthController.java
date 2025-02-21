@@ -1,8 +1,8 @@
-package com.practice.chatting.controller;
+package com.practice.chatting.controller.user;
 
-import com.practice.chatting.dto.ResponseDto;
-import com.practice.chatting.dto.UserRequestDto;
-import com.practice.chatting.service.UserService;
+import com.practice.chatting.dto.common.ResponseDto;
+import com.practice.chatting.dto.user.UserRequestDto;
+import com.practice.chatting.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

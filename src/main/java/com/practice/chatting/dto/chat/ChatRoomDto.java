@@ -1,6 +1,5 @@
-package com.practice.chatting.dto;
+package com.practice.chatting.dto.chat;
 
-import com.practice.chatting.domain.chat.ChatMessage;
 import com.practice.chatting.domain.chat.RoomType;
 import lombok.Builder;
 import lombok.Getter;
