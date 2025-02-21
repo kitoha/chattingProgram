@@ -13,7 +13,6 @@ import com.practice.chatting.repository.UserRepository;
 import com.sun.jdi.request.DuplicateRequestException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -30,10 +29,8 @@ public class FriendService {
   @Transactional
   public ResponseDto<String> sendFriendRequest(String fromUsername, Long toUserId){
     try {
-      User fromUser = userRepository.findByUsername(fromUsername)
-          .orElseThrow(() -> new RuntimeException("User not found"));
-      User toUser = userRepository.findById(toUserId)
-          .orElseThrow(() -> new RuntimeException("Target user not found"));
+      User fromUser = userRepository.getByUsername(fromUsername);
+      User toUser = userRepository.getById(toUserId);
 
       validateNoDuplicateFriendRequest(fromUser, toUser);
 
@@ -48,8 +45,7 @@ public class FriendService {
   @Transactional
   public ResponseDto<String> acceptFriendRequest(Long friendRequestId){
     try {
-      FriendRequest friendRequest = friendRequestRepository.findById(friendRequestId)
-          .orElseThrow(() -> new RuntimeException("친구 요청을 찾을 수 없습니다. id: " + friendRequestId));
+      FriendRequest friendRequest = friendRequestRepository.getById(friendRequestId);
 
       if (!RequestStatus.PENDING.equals(friendRequest.getStatus())) {
         throw new RuntimeException("이미 처리된 친구 요청입니다.");
@@ -80,10 +76,8 @@ public class FriendService {
   @Transactional
   public ResponseDto<String> deleteFriendShip(String userName, Long friendId){
     try {
-      User user = userRepository.findByUsername(userName)
-          .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다. userName: " + userName));
-      User friend = userRepository.findById(friendId)
-          .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다. id: " + friendId));
+      User user = userRepository.getByUsername(userName);
+      User friend = userRepository.getById(friendId);
 
       friendshipRepository.findByUserAndFriend(user, friend)
           .ifPresent(friendshipRepository::delete);
@@ -98,8 +92,7 @@ public class FriendService {
   @Transactional(readOnly = true)
   public ResponseDto<List<FriendDto>> getFriendList(String username){
     try {
-      User user = userRepository.findByUsername(username)
-          .orElseThrow(() -> new RuntimeException("사용자 이름이 존재하지 않습니다."));
+      User user = userRepository.getByUsername(username);
       List<Friendship> friendships = friendshipRepository.findAllByUser(user);
       List<FriendDto> friendDtoList = friendships.stream()
           .map(friendship -> new FriendDto(friendship.getFriend().getId(),
@@ -114,8 +107,7 @@ public class FriendService {
   @Transactional(readOnly = true)
   public ResponseDto<List<FriendRequestResponseDto>> getFriendRequestList(String username){
     try {
-      User user = userRepository.findByUsername(username)
-          .orElseThrow(() -> new RuntimeException("사용자 이름이 존재하지 않습니다."));
+      User user = userRepository.getByUsername(username);
       List<FriendRequest> requests = friendRequestRepository.findByToUserAndStatus(user,
           RequestStatus.PENDING);
       List<FriendRequestResponseDto> friendRequestResponseDtoList = requests.stream()
@@ -144,5 +136,4 @@ public class FriendService {
       }
     }
   }
-
 }

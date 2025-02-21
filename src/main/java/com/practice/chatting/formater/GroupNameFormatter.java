@@ -1,5 +1,8 @@
 package com.practice.chatting.formater;
 
+import static com.practice.chatting.common.constants.COMMA;
+import static com.practice.chatting.common.constants.ELLIPSIS;
+
 import com.practice.chatting.domain.user.User;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +19,7 @@ public class GroupNameFormatter {
     List<String> names = participants.stream()
         .map(User::getUsername)
         .collect(Collectors.toList());
-    String joinedNames = String.join(", ", names);
+    String joinedNames = String.join(COMMA, names);
     return truncate(joinedNames);
   }
 
@@ -24,6 +27,6 @@ public class GroupNameFormatter {
     if (input.length() <= MAX_LENGTH) {
       return input;
     }
-    return input.substring(0, MAX_LENGTH) + "...";
+    return input.substring(0, MAX_LENGTH) + ELLIPSIS;
   }
 }
