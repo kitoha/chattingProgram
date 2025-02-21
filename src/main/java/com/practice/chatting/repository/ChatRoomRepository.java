@@ -18,4 +18,9 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
   Optional<ChatRoom> findOneToOneChatRoom(@Param("userId1") Long userId1,
       @Param("userId2") Long userId2,
       @Param("roomType") RoomType roomType);
+
+  default ChatRoom getById(Long chatRoomId){
+    return findById(chatRoomId)
+        .orElseThrow(() -> new RuntimeException("ChatRoom not found: " + chatRoomId));
+  }
 }

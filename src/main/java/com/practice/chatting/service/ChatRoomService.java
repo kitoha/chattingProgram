@@ -28,7 +28,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -44,8 +43,7 @@ public class ChatRoomService {
   @Transactional
   public ResponseDto<ChatRoomDto> getOrCreateOneToOneChatRoom(Long toUserId, String username){
     try {
-      User user = userRepository.findByUsername(username)
-          .orElseThrow(() -> new RuntimeException("User not found"));
+      User user = userRepository.getByUsername(username);
       Long fromUserId = user.getId();
       Optional<ChatRoom> existingRoom = chatRoomRepository.findOneToOneChatRoom(toUserId,
           fromUserId, RoomType.ONE_TO_ONE);
@@ -65,14 +63,12 @@ public class ChatRoomService {
   @Transactional
   public ResponseDto<ChatRoomDto> createGroupChatRoom(GroupChatRoomRequestDto requestDto, String creatorUsername){
     try {
-      User creator = userRepository.findByUsername(creatorUsername)
-          .orElseThrow(() -> new RuntimeException("User Not found"));
+      User creator = userRepository.getByUsername(creatorUsername);
 
       Set<Long> participantIdSet = new HashSet<>(requestDto.getParticipantIds());
 
       List<User> participants = participantIdSet.stream()
-          .map(id -> userRepository.findById(id)
-              .orElseThrow(() -> new RuntimeException("User Not found")))
+          .map(userRepository::getById)
           .collect(Collectors.toCollection(ArrayList::new));
 
       String groupName = GroupNameFormatter.formatGroupName(participants,requestDto.getGroupName());
@@ -99,10 +95,8 @@ public class ChatRoomService {
   }
 
   private ChatRoom createOneToOneChatRoom(Long toUserId, Long fromUserId) {
-    User toUser = userRepository.findById(toUserId)
-        .orElseThrow(() -> new RuntimeException("User not found"));
-    User fromUser = userRepository.findById(fromUserId)
-        .orElseThrow(() -> new RuntimeException("User not found"));
+    User toUser = userRepository.getById(toUserId);
+    User fromUser = userRepository.getById(fromUserId);
 
     ChatRoom chatRoom = ChatRoom.builder()
         .roomType(RoomType.ONE_TO_ONE)
@@ -153,8 +147,7 @@ public class ChatRoomService {
   @Transactional(readOnly = true)
   public ResponseDto<List<ChatRoomDto>> getChatRoomsForUser(String username){
     try {
-      User user = userRepository.findByUsername(username)
-          .orElseThrow(() -> new RuntimeException("User not found"));
+      User user = userRepository.getByUsername(username);
       List<ChatRoomUser> chatRoomUserList = chatRoomUserRepository.findByUserAndLeftAtIsNull(user);
       List<ChatRoomDto> chatRoomDtoList = chatRoomUserList.stream()
           .map(ChatRoomUser::getChatRoom)
@@ -170,10 +163,8 @@ public class ChatRoomService {
   @Transactional
   public ResponseDto<String> leaveChatRoom(Long chatRoomId, String username){
     try {
-      User user = userRepository.findByUsername(username)
-          .orElseThrow(() -> new RuntimeException("User not found"));
-      ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
-          .orElseThrow(() -> new RuntimeException("ChatRoom not found: " + chatRoomId));
+      User user = userRepository.getByUsername(username);
+      ChatRoom chatRoom = chatRoomRepository.getById(chatRoomId);
       ChatRoomUser chatRoomUser = chatRoomUserRepository.findByChatRoomAndUserAndLeftAtIsNull(
               chatRoom, user)
           .orElseThrow(() -> new IllegalStateException(

@@ -7,7 +7,6 @@ import com.practice.chatting.domain.user.User;
 import com.practice.chatting.repository.ChatRoomRepository;
 import com.practice.chatting.repository.MessageRepository;
 import com.practice.chatting.repository.UserRepository;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,11 +20,9 @@ public class ChatService {
 
   @Transactional
   public ChatMessage sendChatMessage(ChatMessage chatMessage, String username){
-    User sender = userRepository.findByUsername(username)
-        .orElseThrow(() -> new RuntimeException("User not found"));
+    User sender = userRepository.getByUsername(username);
 
-    ChatRoom chatRoom = chatRoomRepository.findById(chatMessage.getChatRoomId())
-        .orElseThrow(()-> new RuntimeException("ChatRoom not found"));
+    ChatRoom chatRoom = chatRoomRepository.getById(chatMessage.getChatRoomId());
 
     Message message = Message.builder()
         .chatRoom(chatRoom)
